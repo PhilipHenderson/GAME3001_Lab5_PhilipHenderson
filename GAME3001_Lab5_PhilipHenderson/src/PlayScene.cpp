@@ -109,6 +109,37 @@ void PlayScene::GUI_Function()
 
 	ImGui::Separator();
 
+	auto radio = static_cast<int>(currentHeuristic);
+	ImGui::LabelText("", "Heuristic Type");
+	ImGui::RadioButton("Manhattan", &radio, static_cast<int>(MANHATTAN));
+	ImGui::SameLine();
+	ImGui::RadioButton("Euclidean", &radio, static_cast<int>(EUCLIDEAN));
+	if (currentHeuristic != Heuristic(radio))
+	{
+		currentHeuristic = Heuristic(radio);
+		m_computeTileCosts();
+	}
+
+	ImGui::Separator();
+
+	static int  startPosition[] = { m_pShip->getGridPosition().x, m_pShip->getGridPosition().y };
+	if (ImGui::SliderInt2("Start Position", startPosition, 0, Config::COL_NUM - 1))
+	{
+		// Row adjustment
+		if (startPosition[1] > Config::ROW_NUM - 1)
+		{
+			startPosition[1] = Config::ROW_NUM - 1;
+		}
+
+		SDL_RenderClear(Renderer::Instance()->getRenderer());
+		m_pShip->getTransform()->position = m_getTile(startPosition[0], startPosition[1])->getTransform()->position + offset;
+		m_pShip->setGridPosition(startPosition[0], startPosition[1]);
+		SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
+		SDL_RenderPresent(Renderer::Instance()->getRenderer());
+	}
+
+	ImGui::Separator();
+
 	static int targetPosition[] = { m_pTarget->getGridPosition().x, m_pTarget->getGridPosition().y };
 	if(ImGui::SliderInt2("Target Position", targetPosition, 0, Config::COL_NUM - 1))
 	{
