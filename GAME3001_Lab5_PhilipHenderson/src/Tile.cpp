@@ -56,6 +56,42 @@ void Tile::setTileCost(const float cost)
 	m_costLabel->setText(cost_string);
 }
 
+TileStatus Tile::getTileStatus() const
+{
+	return m_status;
+}
+
+void Tile::setTileStatus(const TileStatus status)
+{
+	m_status = status;
+
+	switch (status)
+	{
+	case UNVISITED:
+		m_statusLabel->setText("--");
+		break;
+	case OPEN:
+		m_statusLabel->setText("O");
+		break;
+	case CLOSED:
+		m_statusLabel->setText("C");
+		break;
+	case IMPASSABLE:
+		m_statusLabel->setText("I");
+		break;
+	case GOAL:
+		m_statusLabel->setText("G");
+		break;
+	case START:
+		m_statusLabel->setText("S");
+		break;
+	}
+	}
+
+
+}
+}
+
 void Tile::addLabels()
 {
 	auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
