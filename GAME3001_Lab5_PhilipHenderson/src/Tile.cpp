@@ -86,10 +86,6 @@ void Tile::setTileStatus(const TileStatus status)
 		m_statusLabel->setText("S");
 		break;
 	}
-	}
-
-
-}
 }
 
 void Tile::addLabels()
